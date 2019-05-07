@@ -22,20 +22,22 @@ def main():
     p1.clear()
     p1.imshow(img, cmap=plt.cm.Greys_r)
     newimg = np.zeros((len(img),len(img[0])))
-    pi = 0      #parametry do filtru Canny
-    ki = 10
-    pj = 15
-    kj = 30
+    pi = 0      #0 #parametry do filtru Canny
+    ki = 5     #10
+    pj = 15     #15
+    kj = 25     #25
     for i in range(pi, ki):
         for j in range(pj, kj):
             if(i < j):
                 print(i, j)
                 tmp = cv2.GaussianBlur(img, (5, 5), 0)
                 tmp = cv2.Canny(tmp, i, j)
-                tmp = cv2.dilate(tmp, (10, 10), iterations=5)
-                tmp = cv2.erode(tmp, (10, 10), iterations=5)
+                #tmp = cv2.dilate(tmp, (10, 10), iterations=5)
+                #tmp = cv2.erode(tmp, (10, 10), iterations=5)
                 newimg += tmp
     newimg /= (ki - pi)*(kj - pj)
+    newimg = cv2.dilate(newimg, (10, 10), iterations=5)
+    #newimg = cv2.erode(newimg, (10, 10), iterations=5)
     newimg = np.ones((len(img),len(img[0]))) * 255 - newimg
     p2.clear()
     p2.imshow(newimg, cmap=plt.cm.Greys_r)
