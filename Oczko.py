@@ -4,6 +4,10 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from scipy import ndimage
+from skimage.exposure import equalize_adapthist
+from skimage.filters import frangi, threshold_triangle
+from skimage.morphology import remove_small_objects
 
 window = tk.Tk()
 window.protocol("WM_DELETE_WINDOW", window.quit)
@@ -13,36 +17,27 @@ img = cv2.imread("obrazki/images/02_dr.JPG", cv2.IMREAD_COLOR)
 height, width = len(img), len(img[0])
 p1.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-pi = 0  # 0 #parametry do filtru Canny
-ki = 10  # 10
-pj = 15  # 15
-kj = 40  # 25
-result = np.zeros((height, width))
-for i in range(pi, ki):
-    for j in range(pj, kj):
-        if i < j:
-            print(i, j)
-            tmp = cv2.GaussianBlur(img, (5, 5), 0)
-            tmp = cv2.Canny(tmp, i, j)
-            tmp = cv2.dilate(tmp, (10, 10), iterations=5)
-            # tmp = cv2.erode(tmp, (10, 10), iterations=5)
-            result += tmp
-result /= (ki - pi) * (kj - pj)
-result = cv2.dilate(result, (10, 10), iterations=5)
-result = cv2.erode(result, (10, 10), iterations=5)
-result = np.ones((height, width)) * 255 - result
-p2.imshow(result, cmap=plt.cm.Greys_r)
+green = img[:, :, 1]
+green = equalize_adapthist(green)
 
-manual_mask_read = np.ones((height, width)) * 255 - cv2.imread("obrazki/manual1/02_dr.tif", 0)
-p3.imshow(manual_mask_read, cmap=plt.cm.Greys_r)
+lowpass = ndimage.gaussian_filter(green, 20)
+green = green - lowpass
 
-result_mask = np.zeros((height, width))
+result = frangi(green, scale_range=(0, 6), scale_step=1)
+
+thresh = threshold_triangle(result)
+result_mask = result >= thresh
+
+result_mask = remove_small_objects(result_mask, 50, 10)
+p2.imshow(result_mask, cmap="gray")
+
+manual_mask_read = cv2.imread("obrazki/manual1/02_dr.tif", cv2.IMREAD_GRAYSCALE)
+p3.imshow(manual_mask_read, cmap="gray")
+
 manual_mask = np.zeros((height, width))
 for i in range(height):
     for j in range(width):
-        if result[i][j] < 128:
-            result_mask[i][j] = 1
-        if manual_mask_read[i][j] < 128:
+        if manual_mask_read[i][j] > 128:
             manual_mask[i][j] = 1
 
 # PRINT CONFUSION MATRIX
