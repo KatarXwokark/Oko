@@ -1,0 +1,19 @@
+Klasyfikacja:
+
+1. Program generuje losowo fragmenty obrazu 5x5px, które nastêpnie zostan¹ u¿yte do wyuczenia klasyfikatora.
+2. Dla wszystkich fragmentów s¹ obliczane miary statystyczne, które potem pos³u¿¹ do obliczenia metryk euklidesowych (sqrt((a - x)^2 + (b - y)^2 + (c - z)^2 ....)).
+3. Nastêpnie generowane s¹ testy, dla których:
+A) s¹ obliczane miary statystyczne
+B) potem s¹ obliczane metryki z ka¿dym przypadkiem z klasyfikatora
+C) metod¹ kNN dla k = 3 (3 nalbli¿szych s¹siadów) sprawdza siê, które 3 przypadki z klasyfikatora s¹ "najbli¿ej" testowanego fragmentu - 
+je¿eli jest wiêcej nie zawieraj¹cych naczynia to testowany fragment jest zaliczanych do tych bez naczynia i odwrotnie
+4. Po przeanalizowaniu wszystkich przypadków testowych jest obliczana czu³oœæ, swoistoœæ i celnoœæ
+
+Sieæ neuronowa (uczenie maszynowe):
+
+Algorytm uczenia maszynowego jest oparty na sieci neuronowej - sk³adaj¹cej siê z po³¹czonych neuronów z wieloma wejœciami z wagami i jednym wyjœciem obliczan¹ przez funkcjê aktywacji z sumy wejœæ (w naszym przypadku f(x) = max(0, x)).
+Uczenie sieci neuronowej wykorzystuje algorytm wstecznej propagacji oparty na algorytmiw stochastycznego spadku wzd³u¿ gradientu.
+
+1. Generowanie zbioru próbek (podobnie jak w klasyfikacji).
+2. Przy pomocy k-krotnej walidacji skroœnej dzielimy zbiór próbek na k równych podzbiorów (w naszym przypadku 10) i w wszystkich kombinacjach jest wybierany jeden podzbiór bêd¹cym zbiorem testowy, a z pozsta³ych tworzy siê zbiór ucz¹cy sieæ neuronow¹.
+3. Dla ka¿dej kombinacji zbiorów ucz¹cych i testowych obliczane s¹ czu³oœæ, swoistoœæ i celnoœæ.
