@@ -90,3 +90,7 @@ for train_index, test_index in kfold.split(X):
     print(str(TN / (TN + FN) * 100) + " %")
     print("accuracy")
     print(str((TP + TN) / (TP + FP + TN + FN) * 100) + " %")
+    TP = 0
+    FP = 0
+    TN = 0
+    FN = 0
