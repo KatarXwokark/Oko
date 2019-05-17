@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from sklearn.model_selection import KFold
+import pickle
+from sklearn.externals import joblib
 
 liczba_probek = 10000
 
@@ -52,6 +54,8 @@ for i in range(liczba_probek):
         y.append(0)
 
 kfold = KFold(10, True, 1)
+maxi = 0
+saved_model = pickle.dumps(clf)
 for train_index, test_index in kfold.split(X):
     X_train = []
     y_train = []
@@ -76,12 +80,9 @@ for train_index, test_index in kfold.split(X):
                 FN += 1
             else:
                 TN += 1
-        #fig, (p1, p2) = plt.subplots(1, 2, figsize=(15, 5))
-        #p1.clear
-        #p1.imshow(odp[0], cmap="gray")
-        #p2.clear
-        #p2.imshow(odp[1], cmap="gray")
-        #plt.show()
+    if (TP / (TP + FP) * 100 + TN / (TN + FN) * 100 + (TP + TN) / (TP + FP + TN + FN) * 100 > maxi):
+        maxi = TP / (TP + FP) * 100 + TN / (TN + FN) * 100 + (TP + TN) / (TP + FP + TN + FN) * 100
+        saved_model = pickle.dumps(clf)
 
     #koncowe wyniki
     print("sensitivity")
@@ -94,3 +95,6 @@ for train_index, test_index in kfold.split(X):
     FP = 0
     TN = 0
     FN = 0
+
+clf = pickle.loads(saved_model)
+joblib.dump(clf, 'network.pkl')
