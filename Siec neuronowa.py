@@ -1,18 +1,16 @@
 from sklearn.neural_network import MLPClassifier
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 import random
 from sklearn.model_selection import KFold
-import pickle
 from sklearn.externals import joblib
 
 liczba_probek = 10000
 
 oko = cv2.imread("obrazki/images/01_h.JPG", cv2.IMREAD_GRAYSCALE)
 maska = cv2.imread("obrazki/manual1/01_h.tif", cv2.IMREAD_GRAYSCALE)
-oko2 = cv2.imread("obrazki/images/02_h.JPG", cv2.IMREAD_GRAYSCALE)
-maska2 = cv2.imread("obrazki/manual1/02_h.tif", cv2.IMREAD_GRAYSCALE)
+oko2 = cv2.imread("obrazki/images/01_h_s.JPG", cv2.IMREAD_GRAYSCALE)
+maska2 = cv2.imread("obrazki/manual1/01_h_s.tif", cv2.IMREAD_GRAYSCALE)
 
 oczy = []
 maski = []
@@ -39,6 +37,8 @@ for i in range(liczba_probek): #generowanie próbek
 
 X = []  #obliczanie miar statystycznych
 y = []
+y_0 = 0
+y_1 = 0
 for i in range(liczba_probek):
     X.append([])
     X[i].append(np.mean(oczy[i]))
@@ -50,12 +50,14 @@ for i in range(liczba_probek):
         X[i].append(huMoments[j][0])
     if(maski[i][2][2] > 128):
         y.append(1)
+        y_1 += 1
     else:
         y.append(0)
+        y_0 += 1
 
 kfold = KFold(10, True, 1)
 maxi = 0
-saved_model = pickle.dumps(clf)
+clf_best = clf
 for train_index, test_index in kfold.split(X):
     X_train = []
     y_train = []
@@ -82,7 +84,7 @@ for train_index, test_index in kfold.split(X):
                 TN += 1
     if (TP / (TP + FP) * 100 + TN / (TN + FN) * 100 + (TP + TN) / (TP + FP + TN + FN) * 100 > maxi):
         maxi = TP / (TP + FP) * 100 + TN / (TN + FN) * 100 + (TP + TN) / (TP + FP + TN + FN) * 100
-        saved_model = pickle.dumps(clf)
+        clf_best = clf
 
     #koncowe wyniki
     print("sensitivity")
@@ -96,5 +98,5 @@ for train_index, test_index in kfold.split(X):
     TN = 0
     FN = 0
 
-clf = pickle.loads(saved_model)
+clf = clf_best
 joblib.dump(clf, 'network.pkl')
