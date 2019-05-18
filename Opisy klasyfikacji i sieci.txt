@@ -1,19 +1,21 @@
 Klasyfikacja:
 
-1. Program generuje losowo fragmenty obrazu 5x5px, które nastêpnie zostan¹ u¿yte do wyuczenia klasyfikatora.
-2. Dla wszystkich fragmentów s¹ obliczane miary statystyczne, które potem pos³u¿¹ do obliczenia metryk euklidesowych (sqrt((a - x)^2 + (b - y)^2 + (c - z)^2 ....)).
-3. Nastêpnie generowane s¹ testy, dla których:
-A) s¹ obliczane miary statystyczne
-B) potem s¹ obliczane metryki z ka¿dym przypadkiem z klasyfikatora
-C) metod¹ kNN dla k = 3 (3 nalbli¿szych s¹siadów) sprawdza siê, które 3 przypadki z klasyfikatora s¹ "najbli¿ej" testowanego fragmentu - 
-je¿eli jest wiêcej nie zawieraj¹cych naczynia to testowany fragment jest zaliczanych do tych bez naczynia i odwrotnie
-4. Po przeanalizowaniu wszystkich przypadków testowych jest obliczana czu³oœæ, swoistoœæ i celnoœæ
+1. Program generuje losowo fragmenty obrazu 5x5px, ktï¿½re nastï¿½pnie zostanï¿½ uï¿½yte do wyuczenia klasyfikatora.
+2. Dla wszystkich fragmentï¿½w sï¿½ obliczane miary statystyczne, ktï¿½re potem posï¿½uï¿½ï¿½ do obliczenia metryk euklidesowych (sqrt((a - x)^2 + (b - y)^2 + (c - z)^2 ....)).
+3. Nastï¿½pnie generowane sï¿½ testy, dla ktï¿½rych:
+A) sï¿½ obliczane miary statystyczne
+B) potem sï¿½ obliczane metryki z kaï¿½dym przypadkiem z klasyfikatora
+C) metodï¿½ kNN dla k = 3 (3 nalbliï¿½szych sï¿½siadï¿½w) sprawdza siï¿½, ktï¿½re 3 przypadki z klasyfikatora sï¿½ "najbliï¿½ej" testowanego fragmentu - 
+jeï¿½eli jest wiï¿½cej nie zawierajï¿½cych naczynia to testowany fragment jest zaliczanych do tych bez naczynia i odwrotnie
+4. Po przeanalizowaniu wszystkich przypadkï¿½w testowych jest obliczana czuï¿½oï¿½ï¿½, swoistoï¿½ï¿½ i celnoï¿½ï¿½
 
-Sieæ neuronowa (uczenie maszynowe):
+Sieï¿½ neuronowa (uczenie maszynowe):
 
-Algorytm uczenia maszynowego jest oparty na sieci neuronowej - sk³adaj¹cej siê z po³¹czonych neuronów z wieloma wejœciami z wagami i jednym wyjœciem obliczan¹ przez funkcjê aktywacji z sumy wejœæ (w naszym przypadku f(x) = max(0, x)).
-Uczenie sieci neuronowej wykorzystuje algorytm wstecznej propagacji oparty na algorytmiw stochastycznego spadku wzd³u¿ gradientu.
+Algorytm uczenia maszynowego jest oparty na sieci neuronowej - skï¿½adajï¿½cej siï¿½ z poï¿½ï¿½czonych neuronï¿½w z wieloma wejï¿½ciami z wagami i
+jednym wyjï¿½ciem obliczanï¿½ przez funkcjï¿½ aktywacji z sumy wejï¿½ï¿½ (w naszym przypadku f(x) = max(0, x)).
+Uczenie sieci neuronowej wykorzystuje algorytm wstecznej propagacji oparty na algorytmiw stochastycznego spadku wzdï¿½uï¿½ gradientu.
 
-1. Generowanie zbioru próbek (podobnie jak w klasyfikacji).
-2. Przy pomocy k-krotnej walidacji skroœnej dzielimy zbiór próbek na k równych podzbiorów (w naszym przypadku 10) i w wszystkich kombinacjach jest wybierany jeden podzbiór bêd¹cym zbiorem testowy, a z pozsta³ych tworzy siê zbiór ucz¹cy sieæ neuronow¹.
-3. Dla ka¿dej kombinacji zbiorów ucz¹cych i testowych obliczane s¹ czu³oœæ, swoistoœæ i celnoœæ.
+1. Generowanie zbioru prï¿½bek (podobnie jak w klasyfikacji).
+2. Przy pomocy k-krotnej walidacji skroï¿½nej dzielimy zbiï¿½r prï¿½bek na k rï¿½wnych podzbiorï¿½w (w naszym przypadku 10) i w wszystkich
+ kombinacjach jest wybierany jeden podzbiï¿½r bï¿½dï¿½cym zbiorem testowy, a z pozstaï¿½ych tworzy siï¿½ zbiï¿½r uczï¿½cy sieï¿½ neuronowï¿½.
+3. Dla kaï¿½dej kombinacji zbiorï¿½w uczï¿½cych i testowych obliczane sï¿½ czuï¿½oï¿½ï¿½, swoistoï¿½ï¿½ i celnoï¿½ï¿½.
